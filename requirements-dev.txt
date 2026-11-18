@@ -1,0 +1,4 @@
+# Dependencias de desarrollo y prueba.
+# El copiloto usa la biblioteca estándar: sqlite3, urllib y json.
+pydantic-settings==2.12.0
+pytest==8.4.2
