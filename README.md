@@ -51,6 +51,31 @@ Preguntas que el parser local resuelve:
 - *Compara PIB e inflación durante 2020.*
 - *¿En qué año fue menor el crecimiento del PIB?*
 
+## Instalación
+
+El paquete de dominio (`src/app`) se instala en el entorno activo; requiere
+Python 3.11 o superior.
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate            # Windows · en Linux/macOS: source .venv/bin/activate
+python -m pip install -e .        # con pytest: python -m pip install -e ".[dev]"
+python examples/uso.py            # consulta real de extremo a extremo
+python -m pytest -q
+```
+
+`python -m pip install -e .` deja `app` importable desde cualquier directorio y ya
+no depende de la opción `pythonpath` de pytest (que se conserva para poder correr
+las pruebas sin instalar). `examples/uso.py` crea el índice SQLite en un
+directorio temporal, así que no deja archivos en el repositorio.
+
+**Demo estática (`web/`) frente a servicio de dominio (`src/`).** `web/` es la
+aplicación que se sirve con un servidor de archivos estático: HTML, CSS y
+JavaScript leen `web/data.json` y no necesitan Python ni instalación. `src/app` es
+el servicio de dominio (parser léxico, plantilla SQL, SQLite de solo lectura y
+auditoría) y produce las mismas respuestas que muestra la interfaz. Instalar solo
+es necesario para usar `src/app` como biblioteca o para correr las pruebas.
+
 ## Servicio de dominio
 
 ```bash
@@ -113,6 +138,7 @@ web/                        Aplicación estática (sin compilación)
   vendor/d3.min.js          D3 v7.9.2 (ISC), servido localmente
 src/app/config.py           Configuración sin secretos ni rutas absolutas
 src/app/nl_sql/service.py   Parser, plan, plantilla SQL, ejecución y auditoría
+examples/uso.py             Ejemplo ejecutable de extremo a extremo
 tests/test_service.py       Once pruebas con sqlite3 real y base falsa
 pipeline/refresh_worldbank.py  Descarga reproducible del snapshot
 docs/ARCHITECTURE.md        Flujo, validaciones y contrato HTTP
